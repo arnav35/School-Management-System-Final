@@ -1,0 +1,22 @@
+<html>
+<body>
+
+{% extends 'common/base.html' %}
+
+{% block content %}
+<form method="post" action="{% url 'exams' %}">
+	{% csrf_token %}
+	<label>Enter Exam Name: <input type="text" name="exam_name"><br>
+	<label>Enter Subject: <input type="text" name="subject"><br>
+	<label>Enter Total Marks: <input type="text" name="total_marks"><br>
+	<input type="submit">
+</form>
+<div>
+	{% for message in messages %}
+	<h3> {{message}} </h3>
+	{% endfor %}
+</div>
+
+{% endblock %}
+</body>
+</html>
