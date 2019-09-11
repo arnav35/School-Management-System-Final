@@ -34,5 +34,6 @@ urlpatterns = [
     path('exams/', views.exams, name="exams"),
     path('subject/', views.subject, name="subject"),
     path('display_marks/', views.display_marks, name="display_marks"),
+    path('display_attendance/', views.display_attendance, name="display_attendance"),
 ]
 

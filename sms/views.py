@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from sms.models import Teacher, ClassTeacher, SubjectTeacher, Subject, Attendance, Marks, Exam, Login
 from django.contrib import messages
+import datetime
 
 # Create your views here.
 
@@ -45,10 +46,11 @@ def addexams(request):
 def attendance(request):
 	roll_list = request.POST.get("absent_list")
 	class_name = request.POST.get("class_name")
-
+	date = datetime.date.today()
+	
 	p = ClassTeacher.objects.get(class_name=class_name)
 
-	q = Attendance(student_roll=int(roll_list), class_name=p)
+	q = Attendance(student_roll=int(roll_list), class_name=p, date=date)
 	q.save()
 
 	messages.info(request, 'Attendance Added Successfully')
@@ -134,6 +136,30 @@ def display_marks(request):
 	except:				 		
 		messages.info(request, 'No Marks Added')
 		return render(request, 'common/display_marks.html')
+
+def display_attendance(request):
+
+	loginobj = Login.objects.all().first()
+
+	try:
+		classobj = ClassTeacher.objects.get(teacher_id = loginobj.getId())
+		
+		attendanceobj = list(Attendance.objects.filter(class_name = classobj.getClassStr()))	
+		
+		roll = []
+		class_name = []
+		date = []
+		
+		for obj in attendanceobj:
+			roll.append(obj.getRollStr())
+			class_name.append(obj.getClassStr())
+			date.append(obj.getDateStr())
+			
+		return render(request, 'common/display_attendance.html', {'roll':roll, 'class':class_name, 'date':date})
+			
+	except:
+		messages.info(request, 'No Marks Added')	
+		return render(request, 'common/display_attendance.html')
 
 def loginTeacher(request):
 	

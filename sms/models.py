@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 
@@ -42,6 +43,10 @@ class ClassTeacher(models.Model):
 	
 	def getClass(self):
 		return self.class_name
+	
+	def getClassStr(self):
+		return str(self.class_name)
+			
 
 class Subject(models.Model):
 	#primary key subject_id
@@ -80,7 +85,8 @@ class SubjectTeacher(models.Model):
 class Attendance(models.Model):
 	student_roll = models.IntegerField()
 	class_name = models.ForeignKey(ClassTeacher, on_delete=models.CASCADE)
-
+	date = models.DateField()
+	
 	def __str__(self):
  		return str(self.student_roll)
 
@@ -89,6 +95,15 @@ class Attendance(models.Model):
 	
 	def getClass(self):
 		return self.class_name
+		
+	def getRollStr(self):
+		return str(self.student_roll)
+	
+	def getClassStr(self):
+		return str(self.class_name)
+	
+	def getDateStr(self):
+		return str(self.date)
 
 class Marks(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
